@@ -53,3 +53,23 @@ stack.peek()
 stack.isEmpty()
 
 console.log(stack+"")
+
+//  end test
+
+//  do some try -- decimal to binary
+
+function decimal2binary(decimal)
+{
+    let remainders = new Stack()  
+    while(decimal > 0){
+        remainders.push(decimal % 2)
+        decimal = Math.floor(decimal/2)
+    }
+    let result = ""
+    while(!remainders.isEmpty()){
+        result += remainders.pop()
+    }
+    return result
+}
+
+console.log(decimal2binary(10))
