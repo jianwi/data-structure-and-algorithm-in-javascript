@@ -32,7 +32,7 @@ function Queue() {
     }
 }
 
-// test 
+// test
 
 let q = new Queue()
 
@@ -48,3 +48,24 @@ console.log(q+"")
 console.log(q.isEmpty())
 
 console.log(q.size())
+
+// 击鼓传花 实现
+function passGame(nameList,num) {
+    let queue = new Queue()
+    let index = 1
+    for (let name of nameList){
+        queue.enqueue(name)
+    }
+
+    while (queue.size()>1) {
+        if (index % num === 0) {
+            queue.dequeue()
+        } else {
+            queue.enqueue(queue.dequeue())
+        }
+        index++
+    }
+    return queue.front()
+}
+console.log(passGame(["小米","华为","小红"],3));
+
