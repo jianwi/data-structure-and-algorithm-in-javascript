@@ -69,8 +69,92 @@ function LinkedList()
         last_node.next = newNode
         newNode.next = current
     }
+        this.length += 1
         return true
     }
+
+    // get
+    LinkedList.prototype.get = function(position)
+    {
+        // 边界判断,不能等于 length，等于length 的时候是 Null,从0开始的嘛
+        if (position < 0 ||position >= this.length) return false
+
+        let current = this.head
+        let index = 0
+        // 判断 index 和 position 关系，++ 是方便下一次的
+        while(index++ < position)
+        {
+            current = current.next
+        }
+        // 当 index === positon 的时候，已经结束了循环。所有current 还是 last.next。
+        return current
+    }
+    // indexOf
+    LinkedList.prototype.indexOf = function(data){
+        let current = this.head
+        let index = 0
+        while(data !== current.data){
+            current = current.next
+            index += 1
+        }
+        return index
+    }   
+    // removeAt
+    LinkedList.prototype.removeAt = function(position)
+    {
+        // 边界判断
+        if(position<0 || position >= this.length) return false
+
+        // 先找到 positon ，修改 last的 next 为 current.next
+        let current = this.head
+        if(position === 0)
+        {
+            this.head = current.next    
+        }else{
+           let last_node = this.head
+           let index = 0
+           while(index++ < position){
+                last_node = current
+                current = current.next
+           }
+           last_node.next = current.next
+        }
+        this.length -= 1
+        return true
+    }
+    // remove
+    LinkedList.prototype.remove = function(data)
+    {
+        let position = this.indexOf(data)
+        return this.removeAt(position) 
+    }
+    // update
+    LinkedList.prototype.update = function(position, data)
+    {
+        // 找到 position ，修改一下值
+        // 边界判断
+        if(position<0||position>=this.length) return false
+        let index = 0
+        let current = this.head
+        while(index++ < position)
+        {
+            current = current.next
+        }
+        current.data = data
+        return true
+    }
+    //  isEmpty
+    LinkedList.prototype.isEmpty = function()
+    {
+        return this.length === 0
+    }
+    // size
+    LinkedList.prototype.size = function()
+    {
+        return this.length
+    }
+
+
 }
 
 // test
@@ -84,3 +168,22 @@ linked_list.insert("第一",0)
 linked_list.insert("第二",1)
 linked_list.insert("第四",3)
 console.log(linked_list+"")
+console.log(linked_list.get(5))
+console.log(linked_list.indexOf("第一"))
+console.log(linked_list.indexOf("xxx"))
+linked_list.removeAt(1)
+console.log(linked_list+"")
+linked_list.removeAt(2)
+
+console.log(linked_list+"")
+
+linked_list.remove("第一")
+console.log(linked_list+"" )
+
+linked_list.update(0,"更新后第一")
+console.log(linked_list+"" )
+linked_list.update(2,"更新后第三")
+console.log(linked_list+"" )
+
+console.log(linked_list.size())
+
