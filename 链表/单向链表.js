@@ -93,11 +93,15 @@ function LinkedList()
     LinkedList.prototype.indexOf = function(data){
         let current = this.head
         let index = 0
-        while(data !== current.data){
+        // 直到 current.next === null 时结束循环
+        while(current){
+            if(current.data === data){
+                return index
+            }
             current = current.next
             index += 1
         }
-        return index
+        return -1
     }   
     // removeAt
     LinkedList.prototype.removeAt = function(position)
@@ -111,16 +115,16 @@ function LinkedList()
         {
             this.head = current.next    
         }else{
-           let last_node = this.head
+           let prev_node = this.head
            let index = 0
            while(index++ < position){
-                last_node = current
+                prev_node = current
                 current = current.next
            }
-           last_node.next = current.next
+           prev_node.next = current.next
         }
         this.length -= 1
-        return true
+        return current.data
     }
     // remove
     LinkedList.prototype.remove = function(data)
@@ -177,7 +181,7 @@ linked_list.removeAt(2)
 
 console.log(linked_list+"")
 
-linked_list.remove("第一")
+console.log(linked_list.remove("第一"))
 console.log(linked_list+"" )
 
 linked_list.update(0,"更新后第一")
