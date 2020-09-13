@@ -17,7 +17,7 @@ function BinarySearchTree() {
         if (this.root === null) {
             this.root = newNode
         } else {
-            this.insertNode(root, newNode)
+            this.insertNode(this.root, newNode)
         }
     }
     BinarySearchTree.prototype.insertNode = function (node, newNode) {
@@ -36,4 +36,31 @@ function BinarySearchTree() {
             }
         }
     }
+//    先序遍历
+    BinarySearchTree.prototype.preOrderTraversal = function () {
+        this.preOrderTraversalNode(this.root)
+    }
+    BinarySearchTree.prototype.preOrderTraversalNode = function (node) {
+        if (node === null) return
+        print(node.key)
+    //   继续深入　左子树,　当 node.left === null 时也就停下了
+        this.preOrderTraversalNode(node.left)
+    //   继续深入　右子树，　当 node.right === null 时停下
+        this.preOrderTraversalNode(node.right)
+    }
+
 }
+
+
+function print(info)
+{
+    console.log(info)
+}
+// 测试
+// 1. 创建BinarySearchTree
+let bst = new BinarySearchTree()
+let insert_arr = [11,7,15,5,3,9,8,10,13,12,14,20,18,25]
+for (let i of insert_arr) {
+    bst.insert(i)
+}
+bst.preOrderTraversal()
