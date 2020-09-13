@@ -95,19 +95,103 @@ function BinarySearchTree() {
     BinarySearchTree.prototype.search = function (key) {
         let node = this.root
         while (node !== null) {
-            if (node.key === key){
+            if (node.key === key) {
                 return true
-            }else if (node.key < key){
+            } else if (node.key < key) {
                 node = node.right
-            }else {
+            } else {
                 node = node.left
             }
         }
         return false
     }
+    // 删除操作
+    BinarySearchTree.prototype.remove = function (key) {
+        //    1. 寻找要删除的节点
+        //    1.1 记录要删除的节点
+        let current = this.root
+        //    1.2 要删除节点的父节点
+        let parent = null
+        let isLeftChild = true
+        //    2. 寻找要删除的节点
+        while (current.key !== key) {
+            parent = current
+            if (key < current.key) {
+                isLeftChild = true
+                current = current.left
+            } else {
+                isLeftChild = false
+                current = current.right
+            }
+            // 如果　已经找到最后的节点了，但是还是没有找到 key
+            if (current === null) return false
+        }
 
+        // 2. 根据对应的情况删除节点
+        // 2.1 删除的节点是个叶子节点
+        if (current.right === null && current.left === null) {
+            if (current === this.root) {
+                this.root = null
+            } else {
+                if (isLeftChild) {
+                    parent.left = null
+                } else {
+                    parent.right = null
+                }
+            }
+        }
+        // 2.2 删除的节点只有一个子节点
+        else if (current.right === null) {// 只存在左子节点
+            if (current === this.root) {
+                this.root = current.left
+            } else if (isLeftChild) {
+                parent.left = current.left
+            } else {
+                parent.right = current.left
+            }
+        } else if (current.left === null) {//只存在右子节点
+            if (current === this.root) {
+                this.root = current.right
+            } else if (isLeftChild) {
+                parent.left = current.right
+            } else {
+                parent.right = current.right
+            }
+        }
+        // 2.3 删除的节点有两个子节点: 把要删除的节点替换成距离这个节点最近的值即左子树的最大值(后继)和右子树的最小值(前驱)
+        else {
+            // 获取后继
+            let successor = this.getSuccessor(current)
+            //    判断根节点
+            if (this.root === current) {
+                this.root = successor
+            } else if (isLeftChild) {
+                parent.left = successor
+            } else {
+                parent.right = successor
+            }
+            successor.left = current.left
+        }
+
+    }
+    // 寻找后继
+    BinarySearchTree.prototype.getSuccessor = function (delNode) {
+        let successorParent = delNode
+        let successor = delNode.right
+
+        while (successor !== null) {
+            successorParent = successor
+            successor = successor.left
+        }
+
+        //    3. 如果后继节点不是删除节点的右节点
+        if (successor !== delNode.right) {
+            successorParent.left = successor.right
+            successor.right = delNode.right
+        }
+        return successor
+    }
 }
-
 
 function print(info) {
     console.log(info)
@@ -125,8 +209,12 @@ for (let i of insert_arr) {
 // bst.midOrderTraversal()
 // bst.postOrderTraversal()
 
-print(bst.min())
+// print(bst.min())
 
-print(bst.max())
+// print(bst.max())
 
-print(bst.search(122))
+// print(bst.search(122))
+
+bst.remove(25)
+
+// bst.midOrderTraversal()
